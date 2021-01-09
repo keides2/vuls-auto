@@ -41,7 +41,7 @@ cd
 pwd
 
 # zドライブのマウント
-# sudo mount -t drvfs '\\10.1.20.20\departments3\ITSG' /mnt/z
+# sudo mount -t drvfs '\\xxxx.xxxx.xxxx.xxxx\path\to\z' /mnt/z
 
 # 静的スキャン
 # cpeNames にあるソフトウェアのバージョンを検出する
@@ -51,32 +51,32 @@ pwd
 # CPEをフェッチ
 echo
 echo "Fetching CPE from NVD starts..."
-go-cpe-dictionary fetchnvd -http-proxy=http://gwproxy.daikin.co.jp:3128/
+go-cpe-dictionary fetchnvd -http-proxy=http://proxy.abcd.com:3128/
 
 # OVALをフェッチ
 # echo
 # echo "Fetching OVAL starts..."
-# goval-dictionary fetch-redhat 7 8 -http-proxy=http://gwproxy.daikin.co.jp:3128/
+# goval-dictionary fetch-redhat 7 8 -http-proxy=http://proxy.abcd.com:3128/
 
 # gostをフェッチ
 # echo
 # echo "Fetching gost starts..."
-# gost fetch redhat 2016-01-01 --http-proxy http://gwproxy.daikin.co.jp:3128/
+# gost fetch redhat 2016-01-01 --http-proxy http://proxy.abcd.com:3128/
 
 # ExploitDBをフェッチ
 echo
 echo "Fetching ExploitDB starts..."
-go-exploitdb fetch exploitdb --http-proxy http://gwproxy.daikin.co.jp:3128/
+go-exploitdb fetch exploitdb --http-proxy http://proxy.abcd.com:3128/
 
 # CVE最新版をフェッチ NVD
 echo
 echo "Fetching NVD starts..."
-go-cve-dictionary fetchnvd -http-proxy=http://gwproxy.daikin.co.jp:3128/ -latest
+go-cve-dictionary fetchnvd -http-proxy=http://proxy.abcd.com:3128/ -latest
 
 # CVE最新版をフェッチ JVN
 echo
 echo "Fetching JVN starts..."
-go-cve-dictionary fetchjvn -http-proxy=http://gwproxy.daikin.co.jp:3128/ -latest
+go-cve-dictionary fetchjvn -http-proxy=http://proxy.abcd.com:3128/ -latest
 
 # プロジェクトごとに実施
 cd ~
@@ -87,7 +87,7 @@ do
 	RESULTS="/home/vuls/results/$PROJECT"
 	REPORTS="/home/vuls/reports/$PROJECT"
 	LOGDIR="/var/log/vuls/$PROJECT"
-	DEST="/mnt/z/空調生産本部ITソリューション開発Ｇ/LVL2/開発g/脆弱性情報/vuls/$PROJECT"
+	DEST="/mnt/z/path/to/vuls/$PROJECT"
 	echo "Dest: "$DEST
 
 	# 検出 scan ～ レポート report
@@ -99,16 +99,16 @@ do
 	echo "Vuls Reporting ["$PROJECT"] starts..."
 
 	# Teams へ投稿
-	# $ vuls report $FORMAT -lang ja $DIFF -to-slack -http-proxy=http://gwproxy.daikin.co.jp:3128/ > "Vuls-Report-["$PROJECT"]"$FORMAT"-"$TODAY$DIFF".txt"
+	# $ vuls report $FORMAT -lang ja $DIFF -to-slack -http-proxy=http://proxy.abcd.com:3128/ > "Vuls-Report-["$PROJECT"]"$FORMAT"-"$TODAY$DIFF".txt"
 	# を試行。Teams への投稿と同時にファイル保存ができた。
 	# 脆弱性情報を検出した場合、Teams への投稿内容は情報が少ない
-	# 「GPF-Edge Total: 1 (High:0 Medium:0 Low:1 ?:0)    0/0 Fixed   0 installed, 0 updatable    0 exploits  en: 0, ja: 0 alerts」と、
-	# 「1/1 for GPF-Edge」の2件が投稿されたが、CVE番号ほかの内容が発信されない
+	# 「project-A Total: 1 (High:0 Medium:0 Low:1 ?:0)    0/0 Fixed   0 installed, 0 updatable    0 exploits  en: 0, ja: 0 alerts」と、
+	# 「1/1 for project-A」の2件が投稿されたが、CVE番号ほかの内容が発信されない
 	# また、検出があった場合のみ投稿することができるとよいが、Vulsを改変するか、一旦ファイル保存してからテキスト処理を行い投稿する必要がある
 	
 	# レポート
 	vuls report -format-json $FORMAT -lang ja $DIFF -config=$CONFIG -results-dir=$RESULTS -log-dir=$LOGDIR -to-email > "$REPORTS/Vuls-Report-["$PROJECT"]"$FORMAT"-"$TODAY$DIFF".txt"
-	# vuls report -format-json $FORMAT -lang ja $DIFF -to-email > "Vuls-Report-[GPF]"$FORMAT"-"$TODAY$DIFF".txt"
+	# vuls report -format-json $FORMAT -lang ja $DIFF -to-email > "Vuls-Report-[project-A]"$FORMAT"-"$TODAY$DIFF".txt"
 
 	# レポートファイルを $DEST フォルダへコピーする
 	cp $REPORTS/Vuls-Report-*.txt $DEST
