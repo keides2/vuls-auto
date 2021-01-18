@@ -1,0 +1,20 @@
+[servers]
+
+[slack]
+hookURL = "https://outlook.office.com/webhook/xxxx"
+channel = "#VulsReport"
+authUser = "VulsReporter"
+
+[servers.Project-A]
+type = "pseudo"
+cpeNames = [
+	"cpe:/o:netbsd:netbsd:-",
+	"cpe:/a:zlib:zlib:1.1.4",
+	"cpe:/a:info-zip:unzip:5.52",
+	"cpe:/a:info-zip:wiz:2.31",
+	"cpe:/a:microsoft:sql_server:2017:-:~~~~x64~",
+	"cpe:/o:microsoft:windows_10:1607::~~~~x64~",
+	"cpe:/a:microsoft:.net_framework:3.5.1",
+	"cpe:/a:microsoft:.net_framework:4.7.2",
+	]
+

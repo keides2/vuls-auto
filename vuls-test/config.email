@@ -1,0 +1,14 @@
+
+[email]
+smtpAddr = "localhost"
+smtpPort = "25"
+from = "vuls@abcd.com"
+to = [
+	"aaaa@abcd.com",
+	"bbbb@abcd.com",
+	]
+cc = [
+	"cccc@abcd.com",
+	"dddd@abcd.com",
+	]
+subjectPrefix = "[VulsReport]"
